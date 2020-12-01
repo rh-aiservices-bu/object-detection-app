@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 1427.5 946"
+   height="946"
+   width="1427.5">
+  <defs
+     id="defs4">
+    <style
+       id="style2">.a{fill:#fff;}</style>
+  </defs>
+  <title
+     id="title6">camera-viewport-border</title>
+  <path
+     id="path8"
+     d="M 0,262.5 V 12.5 A 12.5,12.5 0 0 1 12.5,0 l 250,0 a 12.5,12.5 0 0 1 0,25 L 25,25 v 237.5 a 12.5,12.5 0 0 1 -25,0 z"
+     class="a"
+     style="fill:#ffffff" />
+  <path
+     id="path10"
+     d="m 0,933.5 v -250 a 12.5,12.5 0 0 1 25,0 V 921 h 237.5 a 12.5,12.5 0 0 1 0,25 H 12.5 A 12.5,12.5 0 0 1 0,933.5 Z"
+     class="a"
+     style="fill:#ffffff" />
+  <path
+     id="path12"
+     d="M 550.8,933.5 A 12.5,12.5 0 0 1 563.3,921 h 300.9 a 12.5,12.5 0 0 1 0,25 H 563.3 a 12.5,12.5 0 0 1 -12.5,-12.5 z"
+     class="a"
+     style="fill:#ffffff" />
+  <path
+     id="path14"
+     d="M 1152.5,933.5 A 12.5,12.5 0 0 1 1165,921 h 237.5 V 683.5 a 12.5,12.5 0 0 1 25,0 v 250 A 12.5,12.5 0 0 1 1415,946 h -250 a 12.5,12.5 0 0 1 -12.5,-12.5 z"
+     class="a"
+     style="fill:#ffffff" />
+  <path
+     id="path16"
+     d="M 1152.5,12.5 A 12.5,12.5 0 0 1 1165,0 l 250,0 a 12.5,12.5 0 0 1 12.5,12.5 v 250 a 12.5,12.5 0 0 1 -25,0 V 25 L 1165,25 a 12.5,12.5 0 0 1 -12.5,-12.5 z"
+     class="a"
+     style="fill:#ffffff" />
+  <path
+     id="path18"
+     d="M 550.8,12.5 A 12.5,12.5 0 0 1 563.3,0 l 300.9,0 a 12.5,12.5 0 0 1 0,25 L 563.3,25 A 12.5,12.5 0 0 1 550.8,12.5 Z"
+     class="a"
+     style="fill:#ffffff" />
+</svg>
