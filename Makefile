@@ -26,3 +26,20 @@ dev-backend:
 dev:
 	./scripts/dev.sh
 
+##################################
+
+# BUILD - build image locally using s2i
+
+.PHONY: build
+build:
+	./scripts/build.sh
+
+##################################
+
+# PUSH - push image to repository
+
+.PHONY: push
+push:
+	./scripts/push.sh
+
+##################################

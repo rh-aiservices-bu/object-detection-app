@@ -18,14 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/video-recorder/modh-demo.git"
+    "url": "git+https://github.com/csds-bu/object-detection-app.git"
   },
   "author": "",
   "license": "GPLv3",
-  "bugs": {
-    "url": "https://github.com/cfchase/video-recorder/issues"
-  },
-  "homepage": "https://github.com/cfchase/video-recorder#readme",
   "dependencies": {
     "aws-sdk": "^2.789.0",
     "axios": "^0.21.0",
