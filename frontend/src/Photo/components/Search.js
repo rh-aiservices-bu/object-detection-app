@@ -50,10 +50,10 @@ function getLabelSettings(label) {
 function Search({
   reset,
   searchPhoto,
-  inferencePending,
-  inferenceResponse,
-  inference,
-  inferenceError,
+  predictionPending,
+  predictionResponse,
+  prediction,
+  predictionError,
 }) {
   const [image, setImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(null);
@@ -70,7 +70,7 @@ function Search({
 
   useEffect(() => {
     drawDetections();
-  }, [inference]);
+  }, [prediction]);
 
   const videoRef = useCallback(
     (node) => {
@@ -138,11 +138,11 @@ function Search({
   }
 
   function drawDetections() {
-    if (!inference || !inference.detections || !imageCanvas.getContext) {
+    if (!prediction || !prediction.detections || !imageCanvas.getContext) {
       return;
     }
 
-    inference.detections.forEach((d) => drawDetection(d));
+    prediction.detections.forEach((d) => drawDetection(d));
   }
 
   function drawDetection({ box, label, score }) {
@@ -257,14 +257,14 @@ function Search({
 
   function renderSnapshot() {
     const displayResult = image ? {} : { display: "none" };
-    const displayButtons = inferencePending ? { display: "none" } : {};
-    const displayLoading = inferencePending ? {} : { display: "none" };
+    const displayButtons = predictionPending ? { display: "none" } : {};
+    const displayLoading = predictionPending ? {} : { display: "none" };
 
     let displayNoLogos;
     if (
-      !inferencePending &&
-      inference &&
-      (!inference.detections || inference.detections.length === 0)
+      !predictionPending &&
+      prediction &&
+      (!prediction.detections || prediction.detections.length === 0)
     ) {
       displayNoLogos = {};
     } else {

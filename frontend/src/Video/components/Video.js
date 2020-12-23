@@ -7,40 +7,30 @@ import Slider from "@material-ui/core/Slider";
 import { resetVideo, sendImage } from "../actions";
 
 import "./Video.scss";
-import { ReactComponent as HorizontalCameraBorder } from "../../Photo/components/horizontal-camera-border.svg";
-import { ReactComponent as VerticalCameraBorder } from "../../Photo/components/vertical-camera-border.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch, faStop, faSync, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 
-const labelSettings = {
-  dog: {
-    bgColor: "#3DB048",
-    width: 90,
-  },
-  cat: {
-    bgColor: "#EE0001",
-    width: 75,
-  },
-};
-
-function getLabelSettings(label) {
-  const defaultSettings = {
-    color: "#EE0001",
-  };
-
-  return labelSettings[label] || defaultSettings;
-}
-
-function Video({ reset, sendImage, user, userId, date, time, image, prediction }) {
+function Video({
+  reset,
+  sendImage,
+  user,
+  userId,
+  date,
+  time,
+  image,
+  prediction,
+  minScore,
+  labelSettings,
+}) {
   const [video, setVideo] = useState(null);
   const [captureCanvas, setCaptureCanvas] = useState(null);
   const [imageCanvas, setImageCanvas] = useState(null);
   const [zonesCanvas, setZonesCanvas] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
   const [recording, setRecording] = useState(false);
-  const [framerate, setFramerate] = useState(1);
+  const [framerate, setFramerate] = useState(2);
   const [facingMode, setFacingMode] = useState("environment");
 
   useEffect(() => {
@@ -102,7 +92,7 @@ function Video({ reset, sendImage, user, userId, date, time, image, prediction }
     }
 
     if (prediction) {
-      prediction.detections.forEach((d) => drawDetection(d));
+      prediction.detections.filter((d) => d.score > minScore).forEach((d) => drawDetection(d));
     }
   }
 
@@ -119,34 +109,29 @@ function Video({ reset, sendImage, user, userId, date, time, image, prediction }
 
   function drawDetection({ box, label, score }) {
     const drawScore = true;
-    const textBgHeight = 24;
-    const scoreWidth = drawScore ? 40 : 0;
+    const textBgHeight = 14;
+    const padding = 2;
+    const letterWidth = 7.25;
+    const scoreWidth = drawScore ? 4 * letterWidth : 0;
     const text = drawScore ? `${label} ${Math.floor(score * 100)}%` : label;
 
     const width = Math.floor((box.xMax - box.xMin) * imageCanvas.width);
     const height = Math.floor((box.yMax - box.yMin) * imageCanvas.height);
     const x = Math.floor(box.xMin * imageCanvas.width);
     const y = Math.floor(box.yMin * imageCanvas.height);
-    const labelSettings = getLabelSettings(label);
-    drawBox(x, y, width, height, labelSettings.bgColor);
-    drawBoxTextBG(
-      x + 5,
-      y + height - textBgHeight - 4,
-      labelSettings.width + scoreWidth,
-      textBgHeight,
-      labelSettings.bgColor
-    );
-    drawBoxText(text, x + 10, y + height - 10);
-    clearZone(x + 5, y + height - textBgHeight - 4, labelSettings.width + scoreWidth, textBgHeight);
+    const labelSetting = labelSettings[label];
+    const labelWidth = label.length * letterWidth + scoreWidth + padding * 2;
+    drawBox(x, y, width, height, labelSetting.bgColor);
+    drawBoxTextBG(x, y + height - textBgHeight, labelWidth, textBgHeight, labelSetting.bgColor);
+    drawBoxText(text, x + padding, y + height - padding);
+    clearZone(x + 5, y + height - textBgHeight - 4, labelWidth, textBgHeight);
     clearZone(x, y, width, height);
   }
 
   function drawBox(x, y, width, height, color) {
     const ctx = imageCanvas.getContext("2d");
-    ctx.lineWidth = 5;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "white";
-    ctx.setLineDash([16, 16]);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color;
     ctx.strokeRect(x, y, width, height);
   }
 
@@ -160,7 +145,7 @@ function Video({ reset, sendImage, user, userId, date, time, image, prediction }
 
   function drawBoxText(text, x, y) {
     const ctx = imageCanvas.getContext("2d");
-    ctx.font = "18px Overpass";
+    ctx.font = "12px Mono";
     ctx.fillStyle = "white";
     ctx.fillText(text, x, y);
   }

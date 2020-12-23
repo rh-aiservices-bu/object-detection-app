@@ -1,9 +1,12 @@
-import get from "lodash/get";
 import { RESET_VIDEO } from "./actions";
 import { WS_INCOMING_MESSAGE } from "../Socket/actions";
 import { INCOMING_MESSAGE_TYPES } from "../Socket/messageTypes";
+import assignLabels from "../utilities/assignLabels";
 
-const initialState = {};
+const initialState = {
+  labelSettings: {},
+  minScore: 0.0,
+};
 
 export const videoReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -23,9 +26,7 @@ function processWsMessage(state, message) {
   switch (type) {
     case INCOMING_MESSAGE_TYPES.OBJECT_DETECTION:
       newValues = data;
-      break;
-    // default:
-    //   newValues = data;
+      newValues.labelSettings = assignLabels(state.labelSettings, data?.prediction);
   }
   return { ...state, ...newValues };
 }

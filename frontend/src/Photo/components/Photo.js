@@ -21,32 +21,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const labelSettings = {
-  dog: {
-    bgColor: "#3DB048",
-    width: 90,
-  },
-  cat: {
-    bgColor: "#EE0001",
-    width: 75,
-  },
-};
-
-function getLabelSettings(label) {
-  const defaultSettings = {
-    color: "#EE0001",
-  };
-
-  return labelSettings[label] || defaultSettings;
-}
-
 function Photo({
   reset,
   searchPhoto,
-  inferencePending,
-  inferenceResponse,
-  inference,
-  inferenceError,
+  predictionPending,
+  predictionResponse,
+  prediction,
+  predictionError,
+  minScore,
+  labelSettings,
 }) {
   const [image, setImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(null);
@@ -63,7 +46,7 @@ function Photo({
 
   useEffect(() => {
     drawDetections();
-  }, [inference]);
+  }, [prediction]);
 
   const videoRef = useCallback(
     (node) => {
@@ -131,43 +114,38 @@ function Photo({
   }
 
   function drawDetections() {
-    if (!inference || !inference.detections || !imageCanvas.getContext) {
+    if (!prediction || !prediction.detections || !imageCanvas.getContext) {
       return;
     }
 
-    inference.detections.forEach((d) => drawDetection(d));
+    prediction.detections.filter((d) => d.score > minScore).forEach((d) => drawDetection(d));
   }
 
   function drawDetection({ box, label, score }) {
     const drawScore = true;
-    const textBgHeight = 24;
-    const scoreWidth = drawScore ? 40 : 0;
+    const textBgHeight = 14;
+    const padding = 2;
+    const letterWidth = 7.25;
+    const scoreWidth = drawScore ? 4 * letterWidth : 0;
     const text = drawScore ? `${label} ${Math.floor(score * 100)}%` : label;
 
     const width = Math.floor((box.xMax - box.xMin) * imageCanvas.width);
     const height = Math.floor((box.yMax - box.yMin) * imageCanvas.height);
     const x = Math.floor(box.xMin * imageCanvas.width);
     const y = Math.floor(box.yMin * imageCanvas.height);
-    const labelSettings = getLabelSettings(label);
-    drawBox(x, y, width, height, labelSettings.bgColor);
-    drawBoxTextBG(
-      x + 5,
-      y + height - textBgHeight - 4,
-      labelSettings.width + scoreWidth,
-      textBgHeight,
-      labelSettings.bgColor
-    );
-    drawBoxText(text, x + 10, y + height - 10);
-    clearZone(x + 5, y + height - textBgHeight - 4, labelSettings.width + scoreWidth, textBgHeight);
+    const labelSetting = labelSettings[label];
+    const labelWidth = label.length * letterWidth + scoreWidth + padding * 2;
+    drawBox(x, y, width, height, labelSetting.bgColor);
+    drawBoxTextBG(x, y + height - textBgHeight, labelWidth, textBgHeight, labelSetting.bgColor);
+    drawBoxText(text, x + padding, y + height - padding);
+    clearZone(x + 5, y + height - textBgHeight - 4, labelWidth, textBgHeight);
     clearZone(x, y, width, height);
   }
 
   function drawBox(x, y, width, height, color) {
     const ctx = imageCanvas.getContext("2d");
-    ctx.lineWidth = 5;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "white";
-    ctx.setLineDash([16, 16]);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color;
     ctx.strokeRect(x, y, width, height);
   }
 
@@ -181,7 +159,7 @@ function Photo({
 
   function drawBoxText(text, x, y) {
     const ctx = imageCanvas.getContext("2d");
-    ctx.font = "18px Overpass";
+    ctx.font = "12px Mono";
     ctx.fillStyle = "white";
     ctx.fillText(text, x, y);
   }
@@ -261,14 +239,14 @@ function Photo({
 
   function renderSnapshot() {
     const displayResult = image ? {} : { display: "none" };
-    const displayButtons = inferencePending ? { display: "none" } : {};
-    const displayLoading = inferencePending ? {} : { display: "none" };
+    const displayButtons = predictionPending ? { display: "none" } : {};
+    const displayLoading = predictionPending ? {} : { display: "none" };
 
     let displayNoObjects;
     if (
-      !inferencePending &&
-      inference &&
-      (!inference.detections || inference.detections.length === 0)
+      !predictionPending &&
+      prediction &&
+      (!prediction.detections || prediction.detections.length === 0)
     ) {
       displayNoObjects = {};
     } else {

@@ -1,16 +1,18 @@
-import get from "lodash/get";
 import {
   RESET_SEARCH,
   SEARCH_PHOTO_PENDING,
   SEARCH_PHOTO_FULFILLED,
   SEARCH_PHOTO_REJECTED,
 } from "./actions";
+import assignLabels from "../utilities/assignLabels";
 
 const initialState = {
-  inferencePending: false,
-  inferenceResponse: null,
-  inference: null,
-  inferenceError: null,
+  predictionPending: false,
+  predictionResponse: null,
+  prediction: null,
+  predictionError: null,
+  labelSettings: {},
+  minScore: 0.0,
 };
 
 export const photoReducer = (state = initialState, action) => {
@@ -20,22 +22,23 @@ export const photoReducer = (state = initialState, action) => {
     case SEARCH_PHOTO_PENDING:
       return {
         ...state,
-        inferencePending: true,
-        inferenceResponse: null,
-        inference: null,
+        predictionPending: true,
+        predictionResponse: null,
+        prediction: null,
       };
     case SEARCH_PHOTO_FULFILLED:
       return {
         ...state,
-        inferencePending: false,
-        inferenceResponse: get(action, "payload.response"),
-        inference: get(action, "payload.response.data"),
+        predictionPending: false,
+        predictionResponse: action?.payload?.response,
+        prediction: action?.payload?.response?.data,
+        labelSettings: assignLabels(state.labelSettings, action?.payload?.response?.data),
       };
     case SEARCH_PHOTO_REJECTED:
       return {
         ...state,
-        inferencePending: false,
-        inferenceError: get(action, "payload.response.error"),
+        predictionPending: false,
+        predictionError: action?.payload?.response?.error,
       };
     default:
       return state;

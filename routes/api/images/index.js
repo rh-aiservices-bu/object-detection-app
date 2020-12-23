@@ -64,4 +64,3 @@ async function requestObjectDetection(image) {
   });
   return response.data;
 }
-
