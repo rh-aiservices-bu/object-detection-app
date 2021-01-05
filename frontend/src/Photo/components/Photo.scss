@@ -32,6 +32,16 @@
     justify-content: center;
     align-items: center;
 
+    .error-container {
+      overflow-x: auto;
+      overflow-y: scroll;
+      padding: 1rem;
+      color: white;
+      .error-icon {
+        color: #c9190b;
+      }
+    }
+
     .img-container {
       height: fit-content;
       width: fit-content;

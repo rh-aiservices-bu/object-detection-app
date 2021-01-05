@@ -25,6 +25,7 @@ export const photoReducer = (state = initialState, action) => {
         predictionPending: true,
         predictionResponse: null,
         prediction: null,
+        predictionError: null,
       };
     case SEARCH_PHOTO_FULFILLED:
       return {
@@ -32,13 +33,16 @@ export const photoReducer = (state = initialState, action) => {
         predictionPending: false,
         predictionResponse: action?.payload?.response,
         prediction: action?.payload?.response?.data,
+        predictionError: null,
         labelSettings: assignLabels(state.labelSettings, action?.payload?.response?.data),
       };
     case SEARCH_PHOTO_REJECTED:
       return {
         ...state,
         predictionPending: false,
-        predictionError: action?.payload?.response?.error,
+        predictionResponse: null,
+        prediction: null,
+        predictionError: action?.payload?.error,
       };
     default:
       return state;

@@ -17,6 +17,7 @@ module.exports = async function (fastify, opts) {
       reply.code(422);
       return {
         status: "error",
+        statusCode: 422,
         message: "Missing Fields: image",
       };
     }
@@ -35,7 +36,9 @@ module.exports = async function (fastify, opts) {
       request.log.error(error);
     }
 
-    return requestObjectDetection(base64data);
+    const { code, data } = await requestObjectDetection(base64data);
+    reply.code(code);
+    return data;
   });
 };
 
@@ -57,10 +60,40 @@ function generateFilename() {
 }
 
 async function requestObjectDetection(image) {
-  const response = await axios({
-    method: "POST",
-    url: OBJECT_DETECTION_URL,
-    data: { image },
-  });
-  return response.data;
+  let code, data;
+  try {
+    const response = await axios({
+      method: "POST",
+      url: OBJECT_DETECTION_URL,
+      data: { image },
+    });
+    code = response.status;
+    data = response.data;
+  } catch (error) {
+    if (error.response) {
+      code = error.response.status;
+      data = {
+        status: "error",
+        statusCode: error.response.status,
+        message: `Error from object detection service: ${error.message}`,
+        data: error.response.data,
+      };
+    } else if (error.request) {
+      code = 500;
+      data = {
+        status: "error",
+        statusCode: 500,
+        message: `No response was received from object detection service: ${error.message}`,
+      };
+    } else {
+      code = 500;
+      data = {
+        status: "error",
+        statusCode: 500,
+        message: error.message,
+      };
+    }
+  }
+
+  return { code, data };
 }

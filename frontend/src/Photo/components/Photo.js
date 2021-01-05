@@ -5,10 +5,13 @@ import { Button, Switch } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { resetSearch, searchPhoto } from "../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch, faSync, faVideo, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faSync,
+  faVideoSlash,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
-import { ReactComponent as VerticalCameraBorder } from "./vertical-camera-border.svg";
-import { ReactComponent as HorizontalCameraBorder } from "./horizontal-camera-border.svg";
 
 import "./Photo.scss";
 
@@ -34,6 +37,8 @@ function Photo({
   const [image, setImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(null);
   const [video, setVideo] = useState(null);
+  const [videoWidth, setVideoWidth] = useState(0);
+  const [videoHeight, setVideoHeight] = useState(0);
   const [imageCanvas, setImageCanvas] = useState(null);
   const [zonesCanvas, setZonesCanvas] = useState(null);
   const [facingMode, setFacingMode] = useState("environment");
@@ -89,6 +94,13 @@ function Photo({
   }
 
   function updateImageCanvas() {
+    setVideoWidth(video.videoWidth);
+    setVideoHeight(video.videoHeight);
+
+    if (!imageCanvas) {
+      return;
+    }
+
     imageCanvas.width = video.videoWidth;
     imageCanvas.height = video.videoHeight;
 
@@ -242,6 +254,14 @@ function Photo({
     const displayButtons = predictionPending ? { display: "none" } : {};
     const displayLoading = predictionPending ? {} : { display: "none" };
 
+    const displayError =
+      !predictionPending && predictionError
+        ? { width: `${videoWidth}px`, height: `${videoHeight}px` }
+        : { display: "none" };
+
+    const displayImage =
+      !predictionPending && !predictionError && prediction ? {} : { display: "none" };
+
     let displayNoObjects;
     if (
       !predictionPending &&
@@ -256,7 +276,13 @@ function Photo({
     return (
       <div className="result" style={displayResult}>
         <div className="img-preview">
-          <div className="img-container">
+          <div className="error-container" style={displayError}>
+            <h2>
+              <FontAwesomeIcon className="error-icon" icon={faExclamationCircle} /> Error
+            </h2>
+            <code>{JSON.stringify(predictionError, null, 2)}</code>
+          </div>
+          <div className="img-container" style={displayImage}>
             <canvas className="result-canvas" ref={imageCanvasRef} />
             <div className="zones overlay">
               <canvas className="zones-canvas" ref={zonesCanvasRef} />
