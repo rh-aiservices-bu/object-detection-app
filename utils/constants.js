@@ -10,15 +10,9 @@ const S3_BUCKET = env.get('S3_BUCKET').asString();
 const S3_PREFIX = env.get('S3_PREFIX').asString();
 const S3_ACCESS_KEY_ID = env.get('S3_ACCESS_KEY_ID').asString();
 const S3_SECRET_ACCESS_KEY = env.get('S3_SECRET_ACCESS_KEY').asString();
-const KAFKA_BROKER_LIST = env.get('KAFKA_BROKER_LIST').
-  default('modh-demo-kafka-bootstrap:9092').
-  asString();
-const KAFKA_TOPIC_IMAGES = env.get('KAFKA_TOPIC_IMAGES').
-  default('images').
-  asString();
-const KAFKA_TOPIC_OBJECTS = env.get('KAFKA_TOPIC_OBJECTS').
-  default('object-detection').
-  asString();
+const KAFKA_BROKER_LIST = env.get('KAFKA_BROKER_LIST').asString();
+const KAFKA_TOPIC_IMAGES = env.get('KAFKA_TOPIC_IMAGES').asString();
+const KAFKA_TOPIC_OBJECTS = env.get('KAFKA_TOPIC_OBJECTS').asString();
 
 const constants = {
   PORT,

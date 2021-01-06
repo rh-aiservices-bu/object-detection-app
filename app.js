@@ -28,7 +28,13 @@ module.exports = async function (fastify, opts) {
     wildcard: false,
   });
 
-  fastify.register(Kafka, kafkaConfig);
+  if (kafkaConfig) {
+    try {
+      fastify.register(Kafka, kafkaConfig);
+    } catch (err) {
+      fastify.log.error("%j", err);
+    }
+  }
 
   fastify.register(WebSocket, {
     handle: (conn) => {
@@ -46,6 +52,8 @@ module.exports = async function (fastify, opts) {
 
   fastify.ready(() => {
     socketInit(fastify);
-    kafkaInit(fastify);
+    if (kafkaConfig) {
+      kafkaInit(fastify);
+    }
   });
 };

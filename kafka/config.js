@@ -2,7 +2,6 @@ const { KAFKA_BROKER_LIST } = require("../utils/constants");
 
 let config;
 
-console.log(KAFKA_BROKER_LIST);
 if (KAFKA_BROKER_LIST) {
   config = {
     producer: {
