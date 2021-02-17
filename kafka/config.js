@@ -1,16 +1,41 @@
-const { KAFKA_BROKER_LIST } = require("../utils/constants");
+const {
+  KAFKA_BOOTSTRAP_SERVER,
+  KAFKA_SECURITY_PROTOCOL,
+  KAFKA_SASL_MECHANISM,
+  KAFKA_USERNAME,
+  KAFKA_PASSWORD
+} = require("../utils/constants");
 
 let config;
 
-if (KAFKA_BROKER_LIST) {
+if (KAFKA_BOOTSTRAP_SERVER) {
+  let commonConfig;
+
+  if (KAFKA_USERNAME && KAFKA_PASSWORD) {
+    commonConfig = {
+      // "debug": "all",
+      // "debug": "security,broker",
+      "bootstrap.servers": KAFKA_BOOTSTRAP_SERVER,
+      "security.protocol": KAFKA_SECURITY_PROTOCOL.toLowerCase(),
+      "sasl.mechanisms": KAFKA_SASL_MECHANISM,
+      "sasl.username": KAFKA_USERNAME,
+      "sasl.password": KAFKA_PASSWORD,
+      "enable.ssl.certificate.verification": false,
+    };
+  } else {
+    commonConfig = {
+      // "debug": "all",
+      // "debug": "security,broker",
+      "metadata.broker.list": KAFKA_BOOTSTRAP_SERVER,
+    };
+  }
   config = {
     producer: {
-      "metadata.broker.list": KAFKA_BROKER_LIST,
-      dr_cb: true,
+      ...commonConfig,
+      "dr_cb": true,
     },
     consumer: {
-      //'debug': 'all',
-      "metadata.broker.list": KAFKA_BROKER_LIST,
+      ...commonConfig,
       "group.id": "object-detection-app-consumer",
       "enable.auto.commit": false,
     },

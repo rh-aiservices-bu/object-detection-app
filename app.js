@@ -16,8 +16,7 @@ const kafkaInit = require("./kafka/init");
 global.users = {};
 
 const wsOpts = {
-  maxPayload: 2 * 1024 * 1024 * 1024, // 2GB
-  path: "/socket",
+  maxPayload: 20 * 1024 * 1024 * 1024, // 20GB
 };
 
 module.exports = async function (fastify, opts) {
@@ -37,13 +36,14 @@ module.exports = async function (fastify, opts) {
   }
 
   fastify.register(WebSocket, {
-    handle: (conn) => {
-      conn.socket.on("message", (message) => {
-        processSocketMessage(fastify, conn, message);
-      });
-    },
-    options: wsOpts,
-  });
+    options: wsOpts
+  })
+
+  fastify.get('/socket', { websocket: true }, (connection, req) => {
+    connection.socket.on("message", (message) => {
+      processSocketMessage(fastify, connection, message);
+    });
+  })
 
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, "routes"),

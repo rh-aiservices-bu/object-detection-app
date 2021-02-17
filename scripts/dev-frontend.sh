@@ -14,4 +14,4 @@ cd frontend
 pwd
 
 npm install
-PORT=${FRONTEND_DEV_PORT} npm start
+npm start
