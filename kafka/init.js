@@ -1,34 +1,23 @@
 const { KAFKA_TOPIC_OBJECTS } = require("../utils/constants");
-
 const processMessage = require("./process-message");
 
-const init = (fastify) => {
-  if (fastify.kafka?.producer) {
-    fastify.kafka.producer.on("error", (err) => {
-      if (err) {
-        fastify.log.error(err);
-      }
-    });
-  } else {
-    fastify.log.error("Failed to connect Kafka producer %j");
-  }
+const init = async (fastify) => {
+  const consumer = fastify.kafka.instance.consumer({ groupId: `odapp-${KAFKA_TOPIC_OBJECTS}-consumer` });
 
-  if (fastify.kafka?.consumer) {
-    fastify.kafka.consumer.on("error", (err) => {
-      if (err) {
-        fastify.log.error(err);
-      }
-    });
+  await consumer.connect();
+  await consumer.subscribe({ topic: KAFKA_TOPIC_OBJECTS, fromBeginning: false });
 
-    fastify.kafka.subscribe(KAFKA_TOPIC_OBJECTS);
-    fastify.kafka.on(KAFKA_TOPIC_OBJECTS, async (message, commit) => {
-      processMessage(fastify, message, commit);
-    });
+  await consumer.run({
+    eachMessage: async ({ message }) => {
+      processMessage(fastify, message);
+    }
+  });
 
-    fastify.kafka.consume();
-  } else {
-    fastify.log.error("Failed to connect Kafka consumer %j");
-  }
+  fastify.kafka.consumers.images = consumer;
+
+  const producer = fastify.kafka.instance.producer();
+  await producer.connect();
+  fastify.kafka.producers.objects = producer;
 };
 
 module.exports = init;

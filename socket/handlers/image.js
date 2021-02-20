@@ -1,9 +1,9 @@
-const { KAFKA_TOPIC_IMAGES } = require("../../utils/constants");
+const {KAFKA_TOPIC_IMAGES} = require("../../utils/constants");
 const concatObject = require("../../utils/concat-object");
 
 async function imageHandler(fastify, conn, messageObj) {
   fastify.log.debug("imageHandler %j", concatObject(messageObj));
-  sendKafkaMsg(
+  await sendKafkaMsg(
     fastify,
     KAFKA_TOPIC_IMAGES,
     messageObj.userId,
@@ -11,12 +11,12 @@ async function imageHandler(fastify, conn, messageObj) {
   );
 }
 
-function formatKafkaMsg({ userId, image, date, time }) {
-  return JSON.stringify({ userId, image, date, time });
+function formatKafkaMsg({userId, image, date, time}) {
+  return JSON.stringify({userId, image, date, time});
 }
 
-function sendKafkaMsg(fastify, topic, key, payload) {
-  const shrunk = concatObject(JSON.parse(payload));
+async function sendKafkaMsg(fastify, topic, key, value) {
+  const shrunk = concatObject(JSON.parse(value));
   fastify.log.debug(
     `kafka produce topic: %s; key: %s; payload: %j`,
     topic,
@@ -26,7 +26,8 @@ function sendKafkaMsg(fastify, topic, key, payload) {
   try {
     // let kafkaMsg = Buffer.from(jsonMsg);
     // let result = fastify.kafka.producer.produce(KAFKA_TOPIC, -1, kafkaMsg, null);
-    let result = fastify.kafka.push({ topic, payload, key });
+    let result = await fastify.kafka.producers.objects.send(
+      {topic, messages: [{key, value}]});
     fastify.log.debug("Pushed message %j", shrunk);
   } catch (error) {
     fastify.log.error(

@@ -1,7 +1,7 @@
 const { OUTGOING_MESSAGE_TYPES } = require("../socket/message-types");
 const concatObject = require("../utils/concat-object");
 
-function processMessage(fastify, message, commit) {
+function processMessage(fastify, message) {
   fastify.log.debug(
     `Kafka Object message received %j`,
     concatObject(JSON.parse(message.value.toString()))
@@ -21,7 +21,6 @@ function processMessage(fastify, message, commit) {
       })
     );
   }
-  commit();
 }
 
 module.exports = processMessage;

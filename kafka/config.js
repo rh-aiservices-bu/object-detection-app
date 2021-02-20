@@ -6,39 +6,34 @@ const {
   KAFKA_PASSWORD
 } = require("../utils/constants");
 
+const { logLevel } = require('kafkajs');
+
 let config;
 
 if (KAFKA_BOOTSTRAP_SERVER) {
-  let commonConfig;
+  const sasl = KAFKA_USERNAME && KAFKA_PASSWORD
+    ? {
+      username: KAFKA_USERNAME,
+      password: KAFKA_PASSWORD,
+      mechanism: KAFKA_SASL_MECHANISM.toLowerCase(),
+    }
+    : null;
 
-  if (KAFKA_USERNAME && KAFKA_PASSWORD) {
-    commonConfig = {
-      // "debug": "all",
-      // "debug": "security,broker",
-      "bootstrap.servers": KAFKA_BOOTSTRAP_SERVER,
-      "security.protocol": KAFKA_SECURITY_PROTOCOL.toLowerCase(),
-      "sasl.mechanisms": KAFKA_SASL_MECHANISM,
-      "sasl.username": KAFKA_USERNAME,
-      "sasl.password": KAFKA_PASSWORD,
-      "enable.ssl.certificate.verification": false,
-    };
-  } else {
-    commonConfig = {
-      // "debug": "all",
-      // "debug": "security,broker",
-      "metadata.broker.list": KAFKA_BOOTSTRAP_SERVER,
-    };
-  }
+  const ssl = true;
+
   config = {
-    producer: {
-      ...commonConfig,
-      "dr_cb": true,
-    },
-    consumer: {
-      ...commonConfig,
-      "group.id": "object-detection-app-consumer",
-      "enable.auto.commit": false,
-    },
+    // clientId: `odapp`,
+    brokers: [KAFKA_BOOTSTRAP_SERVER],
+    // connectionTimeout: 15000,
+    // authenticationTimeout: 15000,
+    // reauthenticationThreshold: 10000,
+    // logLevel: logLevel.INFO,
+    // retry: {
+    //   initialRetryTime: 100,
+    //   retries: 8
+    // },
+    ssl,
+    sasl
   };
 }
 
