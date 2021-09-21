@@ -59,6 +59,8 @@ module.exports = async function (fastify, opts) {
 
   await fastify.ready(async () => {
     socketInit(fastify);
-    await kafkaInit(fastify);
+      if (fastify.kafka && fastify.kafka.instance) {
+          await kafkaInit(fastify);
+      }
   });
 };
