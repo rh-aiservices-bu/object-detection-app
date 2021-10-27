@@ -13,5 +13,5 @@ cd ${DIR}/..
 cd frontend
 pwd
 
-npm install
+#npm install
 npm start

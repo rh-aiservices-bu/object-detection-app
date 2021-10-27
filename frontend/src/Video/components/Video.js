@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import { Button } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -23,7 +25,9 @@ function Video({
   prediction,
   minScore,
   labelSettings,
+  status,
 }) {
+  let history = useHistory();
   const [video, setVideo] = useState(null);
   const [captureCanvas, setCaptureCanvas] = useState(null);
   const [imageCanvas, setImageCanvas] = useState(null);
@@ -32,6 +36,10 @@ function Video({
   const [recording, setRecording] = useState(false);
   const [framerate, setFramerate] = useState(2);
   const [facingMode, setFacingMode] = useState("environment");
+
+  useEffect(() => {
+    if (status.kafka === "disconnected") history.push("/photo");
+  }, [status]);
 
   useEffect(() => {
     setFrame();

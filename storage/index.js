@@ -10,13 +10,7 @@ const {
 } = require("../utils/constants");
 
 let storage;
-if (
-  S3_ENDPOINT &&
-  S3_BUCKET &&
-  S3_PREFIX &&
-  S3_ACCESS_KEY_ID &&
-  S3_SECRET_ACCESS_KEY
-) {
+if (S3_ENDPOINT && S3_BUCKET && S3_PREFIX && S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY) {
   storage = new S3Storage(
     S3_ENDPOINT,
     S3_BUCKET,

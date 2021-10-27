@@ -9,8 +9,7 @@ const WebSocket = require("fastify-websocket");
 const processSocketMessage = require("./socket/process-socket-message");
 const socketInit = require("./socket/init");
 
-
-const Kafka = require("./plugins/kafka")
+const Kafka = require("./plugins/kafka");
 // const Kafka = require("fastify-kafka");
 // const { Kafka } = require('kafkajs')
 
@@ -43,14 +42,14 @@ module.exports = async function (fastify, opts) {
   }
 
   fastify.register(WebSocket, {
-    options: wsOpts
-  })
+    options: wsOpts,
+  });
 
-  fastify.get('/socket', { websocket: true }, (connection, req) => {
+  fastify.get("/socket", { websocket: true }, (connection, req) => {
     connection.socket.on("message", (message) => {
       processSocketMessage(fastify, connection, message);
     });
-  })
+  });
 
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, "routes"),
@@ -59,8 +58,8 @@ module.exports = async function (fastify, opts) {
 
   await fastify.ready(async () => {
     socketInit(fastify);
-      if (fastify.kafka && fastify.kafka.instance) {
-          await kafkaInit(fastify);
-      }
+    if (fastify.kafka && fastify.kafka.instance) {
+      await kafkaInit(fastify);
+    }
   });
 };

@@ -5,13 +5,7 @@ const path = require("path");
 const S3_API_VERSION = "2006-03-01";
 
 class S3Storage {
-  constructor(
-    s3Endpoint,
-    s3Bucket,
-    s3Prefix,
-    s3AccessKeyId,
-    s3SecretAccessKey
-  ) {
+  constructor(s3Endpoint, s3Bucket, s3Prefix, s3AccessKeyId, s3SecretAccessKey) {
     this.s3Endpoint = s3Endpoint;
     this.s3Bucket = s3Bucket;
     this.s3Prefix = s3Prefix;

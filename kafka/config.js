@@ -3,21 +3,22 @@ const {
   KAFKA_SECURITY_PROTOCOL,
   KAFKA_SASL_MECHANISM,
   KAFKA_USERNAME,
-  KAFKA_PASSWORD
+  KAFKA_PASSWORD,
 } = require("../utils/constants");
 
-const { logLevel } = require('kafkajs');
+const { logLevel } = require("kafkajs");
 
 let config;
 
 if (KAFKA_BOOTSTRAP_SERVER) {
-  const sasl = KAFKA_USERNAME && KAFKA_PASSWORD
-    ? {
-      username: KAFKA_USERNAME,
-      password: KAFKA_PASSWORD,
-      mechanism: KAFKA_SASL_MECHANISM.toLowerCase(),
-    }
-    : null;
+  const sasl =
+    KAFKA_USERNAME && KAFKA_PASSWORD
+      ? {
+          username: KAFKA_USERNAME,
+          password: KAFKA_PASSWORD,
+          mechanism: KAFKA_SASL_MECHANISM.toLowerCase(),
+        }
+      : null;
 
   const ssl = !!sasl;
 
@@ -33,7 +34,7 @@ if (KAFKA_BOOTSTRAP_SERVER) {
     //   retries: 8
     // },
     ssl,
-    sasl
+    sasl,
   };
 }
 

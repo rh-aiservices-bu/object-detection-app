@@ -12,6 +12,6 @@ fi
 cd ${DIR}/..
 pwd
 
-npm install
-npm run build
+#npm install
+#npm run build
 npm run dev

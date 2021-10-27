@@ -9,9 +9,7 @@ setup = (fastify) => {
         try {
           client.send(JSON.stringify({ type: "heartbeat", status }));
         } catch (error) {
-          fastify.log.error(
-            `Failed to broadcast message to client.  Error: ${error.message}`
-          );
+          fastify.log.error(`Failed to broadcast message to client.  Error: ${error.message}`);
         }
       }
     });

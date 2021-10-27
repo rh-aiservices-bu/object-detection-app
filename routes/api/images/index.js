@@ -4,10 +4,7 @@ const moment = require("moment");
 const _ = require("lodash");
 const storage = require("../../../storage");
 const axios = require("../../../utils/axios");
-const {
-  OBJECT_DETECTION_URL,
-  KAFKA_TOPIC_IMAGES,
-} = require("../../../utils/constants");
+const { OBJECT_DETECTION_URL, KAFKA_TOPIC_IMAGES } = require("../../../utils/constants");
 const imageStoragePrefix = "images";
 
 module.exports = async function (fastify, opts) {
@@ -22,10 +19,7 @@ module.exports = async function (fastify, opts) {
       };
     }
 
-    const base64data = image.replace(
-      /^da36ta:image\/(png|jpg|jpeg);base64,/,
-      ""
-    );
+    const base64data = image.replace(/^da36ta:image\/(png|jpg|jpeg);base64,/, "");
     const buff = Buffer.from(base64data, "base64");
 
     let file;

@@ -2,10 +2,10 @@ const { KAFKA_BOOTSTRAP_SERVER } = require("../utils/constants");
 
 function appStatus(fastify) {
   let kafka = "disconnected";
-  if (KAFKA_BOOTSTRAP_SERVER && fastify.kafka) {
-    kafka = {};
-    kafka.producer = fastify.kafka.producer ? "connected" : "disconnected";
-    kafka.consumer = fastify.kafka.consumer ? "connected" : "disconnected";
+  let imagesConnected = fastify?.kafka?.producers?.images;
+  let objectsConnected = fastify?.kafka?.consumers?.objects;
+  if (KAFKA_BOOTSTRAP_SERVER && imagesConnected && objectsConnected) {
+    kafka = "connected";
   }
 
   return {

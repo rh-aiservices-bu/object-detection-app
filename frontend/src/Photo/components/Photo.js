@@ -33,6 +33,7 @@ function Photo({
   predictionError,
   minScore,
   labelSettings,
+  status,
 }) {
   const [image, setImage] = useState(null);
   const [cameraEnabled, setCameraEnabled] = useState(null);
@@ -190,6 +191,8 @@ function Photo({
   }
 
   function renderCamera() {
+    const displayVideoToggle = status.kafka === "connected" ? {} : { display: "none" };
+
     if (!cameraEnabled || image) {
       return null;
     }
@@ -234,7 +237,7 @@ function Photo({
           </Button>
         </div>
         <div className="right-button-container button-container">
-          <Link to={"/video"}>
+          <Link to={"/video"} style={displayVideoToggle}>
             <Button
               variant="contained"
               size="large"
@@ -325,7 +328,7 @@ function Photo({
 }
 
 function mapStateToProps(state) {
-  return state.photoReducer;
+  return { ...state.appReducer, ...state.photoReducer };
 }
 
 function mapDispatchToProps(dispatch) {

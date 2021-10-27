@@ -1,16 +1,16 @@
-const fp = require('fastify-plugin');
-const {Kafka} = require('kafkajs');
+const fp = require("fastify-plugin");
+const { Kafka } = require("kafkajs");
 
 const fn = (fastify, opts, next) => {
-  fastify.decorate('kafka', {
+  fastify.decorate("kafka", {
     instance: new Kafka(opts),
     consumers: {},
-    producers: {}
+    producers: {},
   });
 
   next();
-}
+};
 
 module.exports = fp(fn, {
-  fastify: '>=3'
+  fastify: ">=3",
 });
