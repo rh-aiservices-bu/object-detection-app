@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, Component } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Switch } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { resetSearch, searchPhoto } from "../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,15 +14,6 @@ import {
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
 
 import "./Photo.scss";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-  input: {
-    display: "none",
-  },
-}));
 
 function Photo({
   reset,
@@ -43,8 +34,6 @@ function Photo({
   const [imageCanvas, setImageCanvas] = useState(null);
   const [zonesCanvas, setZonesCanvas] = useState(null);
   const [facingMode, setFacingMode] = useState("environment");
-
-  const classes = useStyles();
 
   useEffect(() => {
     enableCamera();

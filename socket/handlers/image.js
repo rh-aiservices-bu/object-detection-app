@@ -14,8 +14,6 @@ async function sendKafkaMsg(fastify, topic, key, value) {
   const shrunk = concatObject(JSON.parse(value));
   fastify.log.debug(`kafka produce topic: %s; key: %s; payload: %j`, topic, key, shrunk);
   try {
-    // let kafkaMsg = Buffer.from(jsonMsg);
-    // let result = fastify.kafka.producer.produce(KAFKA_TOPIC, -1, kafkaMsg, null);
     let result = await fastify.kafka.producers.images.send({
       topic,
       messages: [{ key, value }],

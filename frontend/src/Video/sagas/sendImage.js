@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
 import { sendOutgoingMessage } from "../../Socket/actions";
 import { SEND_IMAGE } from "../actions";
 
