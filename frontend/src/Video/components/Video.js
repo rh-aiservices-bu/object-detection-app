@@ -3,14 +3,11 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { Button } from "@material-ui/core";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
 import { resetVideo, sendImage } from "../actions";
 
 import "./Video.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch, faStop, faSync, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faStop, faSync, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -34,7 +31,7 @@ function Video({
   const [zonesCanvas, setZonesCanvas] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
   const [recording, setRecording] = useState(false);
-  const [framerate, setFramerate] = useState(2);
+  const [framerate] = useState(2);
   const [facingMode, setFacingMode] = useState("environment");
 
   useEffect(() => {
@@ -181,16 +178,6 @@ function Video({
     clearInterval(intervalId);
     setIntervalId(null);
     setRecording(false);
-  }
-
-  function onFramerateChange(event, newValue) {
-    console.log(newValue);
-    setFramerate(newValue);
-    if (recording) {
-      clearInterval(intervalId);
-      let x = setInterval(() => captureFrame(), 1000 / framerate);
-      setIntervalId(x);
-    }
   }
 
   function onFacingModeClicked() {

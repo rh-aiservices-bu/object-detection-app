@@ -10,8 +10,6 @@ const processSocketMessage = require("./socket/process-socket-message");
 const socketInit = require("./socket/init");
 
 const Kafka = require("./plugins/kafka");
-// const Kafka = require("fastify-kafka");
-// const { Kafka } = require('kafkajs')
 
 const kafkaConfig = require("./kafka/config");
 const kafkaInit = require("./kafka/init");
