@@ -21,3 +21,83 @@
     max-width: 640px;
   }
 }
+
+.header {
+  background-image: url(rh-header.png);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.header-wrapper {
+  position: relative;
+  height: 200px;
+  margin-bottom: 40px;
+}
+
+.rh-event-teaser-title, .rh-standard-header-title-xlarge {
+  font-size: 1.25rem;
+  font-size: var(--pf-c-title--m-xl--FontSize,1.25rem);
+  font-weight: 400;
+  font-weight: var(--pfe-theme--font-weight--normal,400);
+  text-transform: uppercase;
+  color: #e00;
+  color: var(--pfe-theme--color--ui-accent,#e00);
+}
+
+.rh-article-teaser-hero-headline, .rh-band-header-hero-headline, .rh-event-teaser-headline, .rh-standard-header-headline-xlarge, .rh-taxonomy-header-headline {
+  font-family: Red Hat Display,RedHatDisplay,Overpass,Arial,sans-serif;
+  font-family: var(--pfe-theme--font-family--heading,"Red Hat Display","RedHatDisplay","Overpass",Overpass,Arial,sans-serif);
+  font-size: 2.5rem;
+  font-size: var(--pf-c-title--m-5xl--FontSize,2.5rem);
+  line-height: 1.2;
+  line-height: var(--pfe-theme--line-height--heading-mega,1.2);
+  font-weight: 300;
+  font-weight: var(--pfe-theme--font-weight--light,300);
+}
+
+.rh-article-teaser-list-title, .rh-card-header-title, .rh-card-header-title-large, .rh-event-teaser-title, .rh-person-name, .rh-standard-header-title-accent, .rh-standard-header-title-large, .rh-standard-header-title-xlarge {
+  font-family: Red Hat Display,RedHatDisplay,Overpass,Arial,sans-serif;
+  font-family: var(--pfe-theme--font-family--heading,"Red Hat Display","RedHatDisplay","Overpass",Overpass,Arial,sans-serif);
+  line-height: 1.5;
+  line-height: var(--pfe-theme--line-height,1.5);
+}
+
+.rh-event-teaser-meta {
+  line-height: 1.5;
+  line-height: var(--pfe-theme--line-height,1.5);
+  font-family: var(--pfe-theme--font-family--heading,"Red Hat Display","RedHatDisplay","Overpass",Overpass,Arial,sans-serif);
+}
+
+.rh-event-teaser-pipe {
+  border: 1px solid transparent;
+  padding-left: 16px;
+  margin-right: 16px;
+  border-right-color: #d2d3d5;
+}
+
+.rh-image-embed-img {
+  max-width: 250px;
+}
+
+.rh-band-container, .rh-footer-container, .rh-form-container, .rh-pull-content-container, .rh-push-content-container {
+    max-width: 86%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+}
+
+@media (min-width: 768px) {
+  [data-rh-layout~=aside-right] {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.errorMessage {
+  margin: 10px 10px 25px 10px;
+  width: 70%;
+}

@@ -23,7 +23,7 @@ function Home() {
         <Button
           variant="contained"
           size="large"
-          color="default"
+          color="secondary"
           className={classes.margin}
           href="/video"
         >
@@ -35,7 +35,7 @@ function Home() {
         <Button
           variant="contained"
           size="large"
-          color="default"
+          color="secondary"
           className={classes.margin}
           href="/photo"
         >
