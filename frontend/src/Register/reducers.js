@@ -21,6 +21,7 @@ import {
           registrationError: null,
         };
       case REGISTER_USER_FULFILLED:
+        localStorage.setItem('user', action?.payload?.response?.data.id);
         return {
           ...state,
           registrationResponse: action?.payload?.response,

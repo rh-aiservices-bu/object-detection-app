@@ -1,9 +1,10 @@
 export const REGISTER_USER = "Register.REGISTER_USER";
-export const registerUser = (register) => ({
+export const registerUser = (register, callback) => ({
   type: REGISTER_USER,
   payload: {
     register,
   },
+  callback
 });
 
 export const REGISTER_USER_FULFILLED = "Register.REGISTER_USER_FULFILLED";

@@ -7,7 +7,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={props => {
-        console.log(props.location);
         if (user == null) {
           return <Redirect to={{ pathname: '/register', state: { from: props.location } }} />
         }

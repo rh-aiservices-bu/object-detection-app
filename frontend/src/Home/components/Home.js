@@ -20,6 +20,9 @@ function Home() {
   return (
     <div className="home">
       <div>
+        <p>User: {localStorage.getItem('user')}</p>
+      </div>
+      <div>
         <Button
           variant="contained"
           size="large"

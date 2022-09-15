@@ -10,6 +10,7 @@ import {
 const apiUrl = "/api/register";
 
 function* executeRegisterUser(action) {
+  console.log(action);
   try {
     const response = yield call(axios, {
       method: "POST",
@@ -18,6 +19,9 @@ function* executeRegisterUser(action) {
         register: action.payload.register,
       },
     });
+
+    action.callback();
+    
     yield put(registerUserFulfilled(response));
   } catch (error) {
     yield put(createAxiosErrorNotification(error));

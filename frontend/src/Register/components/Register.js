@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, TextField, Grid, Icon } from "@material-ui/core";
 import { registerUser } from "../actions";
 import Alert from '@material-ui/lab/Alert';
+import { useHistory } from 'react-router-dom'
 
 function Register({
   registerUser,
@@ -14,6 +15,7 @@ function Register({
 
   const [email, setEmail] = useState('');
   const [nick, setNick] = useState('');
+  const history = useHistory();
 
   function handleChangeNick(e) {
     setNick(e.target.value);
@@ -27,7 +29,9 @@ function Register({
     registerUser({
       "email": email,
       "nick": nick
-    });
+    }, () => {
+      history.push("/");
+    })
   }
 
   return(
@@ -75,8 +79,8 @@ function mapStateToProps(state) {
   
 function mapDispatchToProps(dispatch) {
   return {
-    registerUser: (register) => {
-      dispatch(registerUser(register));
+    registerUser: (register, callback) => {
+      dispatch(registerUser(register, callback));
     },
   };
 }
