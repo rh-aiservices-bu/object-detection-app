@@ -9,57 +9,29 @@ const imageStoragePrefix = "images";
 
 module.exports = async function (fastify, opts) {
   fastify.post("/", async function (request, reply) {
-    const image = _.get(request, "body.image");
-    if (!image) {
+    const register = _.get(request, "body.register");
+    if (!register) {
       reply.code(422);
       return {
         status: "error",
         statusCode: 422,
-        message: "Missing Fields: image",
+        message: "Missing Fields: register",
       };
     }
 
-    const base64data = image.replace(/^da36ta:image\/(png|jpg|jpeg);base64,/, "");
-    const buff = Buffer.from(base64data, "base64");
-
-    let file;
-    try {
-      file = await writeJpg(buff, request);
-    } catch (error) {
-      request.log.error("error occurred writing photo");
-      request.log.error(error);
-    }
-
-    const { code, data } = await requestObjectDetection(base64data);
+    const { code, data } = await requestRegistration(register);
     reply.code(code);
     return data;
   });
 };
 
-async function writeJpg(data, request) {
-  const photoId = generateFilename();
-  try {
-    const response = await storage.writeFile(data, photoId);
-    return photoId;
-  } catch (error) {
-    request.log.error(`Failure to write ${photoId} to storage`);
-    throw error;
-  }
-}
-
-function generateFilename() {
-  const date = moment().format("YYYYMMDD-HH:mm:ss:SSS");
-  const random = Math.random().toString(36).slice(-5);
-  return `${imageStoragePrefix}/${date}-${random}.jpg`;
-}
-
-async function requestObjectDetection(image) {
+async function requestRegistration(register) {
   let code, data;
   try {
     const response = await axios({
       method: "POST",
-      url: OBJECT_DETECTION_URL + "/predictions",
-      data: { image },
+      url: OBJECT_DETECTION_URL + "/api/register",
+      data: { register },
     });
     code = response.status;
     data = response.data;

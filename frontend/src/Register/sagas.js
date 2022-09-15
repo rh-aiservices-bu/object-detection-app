@@ -7,7 +7,7 @@ import {
   registerUserRejected,
 } from "./actions";
 
-const apiUrl = "http://localhost:8081/api/register";
+const apiUrl = "/api/register";
 
 function* executeRegisterUser(action) {
   try {
