@@ -10,6 +10,7 @@ const imageStoragePrefix = "images";
 module.exports = async function (fastify, opts) {
   fastify.post("/", async function (request, reply) {
     const image = _.get(request, "body.image");
+    const user = _.get(request, "body.user");
     if (!image) {
       reply.code(422);
       return {
@@ -30,7 +31,7 @@ module.exports = async function (fastify, opts) {
       request.log.error(error);
     }
 
-    const { code, data } = await requestObjectDetection(base64data);
+    const { code, data } = await requestObjectDetection(base64data, user);
     reply.code(code);
     return data;
   });
@@ -53,12 +54,13 @@ function generateFilename() {
   return `${imageStoragePrefix}/${date}-${random}.jpg`;
 }
 
-async function requestObjectDetection(image) {
+async function requestObjectDetection(image, user) {
   let code, data;
   try {
     const response = await axios({
       method: "POST",
       url: OBJECT_DETECTION_URL + "/predictions",
+      headers: {'x-redhat-uid': user},
       data: { image },
     });
     code = response.status;
