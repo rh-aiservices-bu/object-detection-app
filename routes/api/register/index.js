@@ -30,7 +30,7 @@ async function requestRegistration(register) {
   try {
     const response = await axios({
       method: "POST",
-      url: OBJECT_DETECTION_URL + "/api/register",
+      url: OBJECT_DETECTION_URL + "/camel/v1/cache/users",
       data: { register },
     });
     code = response.status;
