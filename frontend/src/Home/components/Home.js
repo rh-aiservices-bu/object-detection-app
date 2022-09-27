@@ -43,6 +43,11 @@ function Home({
   var [score, setScore] = useState(scores.score);
 
   useEffect(() => {
+    getScores();
+    getTags();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => getScores(), 10000);
     return () => {
       clearInterval(interval);
