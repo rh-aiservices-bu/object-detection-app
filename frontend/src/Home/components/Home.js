@@ -71,10 +71,10 @@ function Home({
     <Grid container spacing={3}>
       <Grid container xs={6} direction="row" alignItems="center" className="marginPanel">
         <Grid item xs={1}>
-          <Avatar>{localStorage.getItem('user')}</Avatar>
+          <Avatar>{localStorage.getItem('nick').slice(0,2).toLocaleUpperCase()}</Avatar>
         </Grid>
-        <Grid item xs={4}>
-          <p className="rh-event-teaser-meta">Witaj {localStorage.getItem('user')}! Twój wynik: <b>{score}</b></p>
+        <Grid item xs={5}>
+          <p className="rh-event-teaser-meta">Witaj <b>{localStorage.getItem('nick')}</b>! Twój wynik: <b>{score}</b></p>
         </Grid>
         <Grid item xs={3}>
           <Button variant="contained" size="large" color="secondary" className={classes.margin} href="/photo">

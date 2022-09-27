@@ -22,6 +22,7 @@ import {
         };
       case REGISTER_USER_FULFILLED:
         localStorage.setItem('user', action?.payload?.response?.data.id);
+        localStorage.setItem('nick', action?.payload?.response?.data.nick);
         return {
           ...state,
           registrationResponse: action?.payload?.response,
