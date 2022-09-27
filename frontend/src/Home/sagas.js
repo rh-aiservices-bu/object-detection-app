@@ -15,9 +15,13 @@ const apiUrlTags = "/api/tags";
 
 function* executeGetScores(action) {
   try {
+    console.log("Sending");
     const response = yield call(axios, {
-      method: "GET",
+      method: "POST",
       url: apiUrlScores,
+      data: {
+        user: localStorage.getItem('user'),
+      },
     });
     
     yield put(getScoresFulfilled(response));

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Link, Grid } from "@material-ui/core";
+import { Button, Avatar, Grid } from "@material-ui/core";
 import { getScores, getTags } from "../actions";
 
 import "./Home.scss";
@@ -38,8 +38,9 @@ function Home({
 }) {
   const classes = useStyles();
 
-  var [dataScores, setDataScores] = useState(scores);
+  var [dataScores, setDataScores] = useState(scores.scores);
   var [dataTags, setDataTags] = useState(tags);
+  var [score, setScore] = useState(scores.score);
 
   useEffect(() => {
     const interval = setInterval(() => getScores(), 10000);
@@ -55,46 +56,52 @@ function Home({
     };
   }, []);
 
-  useEffect(() => setDataScores(scores), [scores]);
+  useEffect(() => {
+    setDataScores(scores.scores);
+    setScore(scores.score)
+  }, [scores]);
   useEffect(() => setDataTags(tags), [tags]);
 
   return (
-    <div>
-      <div>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <p>User: {localStorage.getItem('user')}, Twój wynik: 85.7</p>
-            <Button variant="contained" size="large" color="secondary" className={classes.margin} href="/photo">
-              Zrób zdjęcie
-            </Button>
-          </Grid>
-          <Grid item xs={10}>
-          <Paper>
-            <Chart data={dataScores}>
-              <ArgumentAxis />
-              <ValueAxis />
-              <BarSeries valueField="score" argumentField="name" />
-              <Title text="Aktualne wyniki" />
-              <EventTracker />
-              <Tooltip />
-            </Chart>
-          </Paper>
-          </Grid>
-          <Grid item xs={10}>
-          <Paper>
-            <Chart data={dataTags} rotated>
-              <ArgumentAxis />
-              <ValueAxis />
-              <BarSeries valueField="score" argumentField="name" />
-              <Title text="Najpopularniejsze tagi" />
-              <EventTracker />
-              <Tooltip />
-            </Chart>
-          </Paper>
-          </Grid>
+    <Grid container spacing={3}>
+      <Grid container xs={6} direction="row" alignItems="center" className="marginPanel">
+        <Grid item xs={1}>
+          <Avatar>{localStorage.getItem('user')}</Avatar>
         </Grid>
-      </div>
-    </div>
+        <Grid item xs={4}>
+          <p className="rh-event-teaser-meta">Witaj {localStorage.getItem('user')}! Twój wynik: <b>{score}</b></p>
+        </Grid>
+        <Grid item xs={3}>
+          <Button variant="contained" size="large" color="secondary" className={classes.margin} href="/photo">
+            Zrób zdjęcie
+          </Button>
+        </Grid>
+      </Grid>
+      <Grid item xs={10}>
+      <Paper>
+        <Chart data={dataScores}>
+          <ArgumentAxis />
+          <ValueAxis />
+          <BarSeries valueField="score" argumentField="name" />
+          <Title text="Aktualne wyniki" />
+          <EventTracker />
+          <Tooltip />
+        </Chart>
+      </Paper>
+      </Grid>
+      <Grid item xs={10}>
+      <Paper>
+        <Chart data={dataTags} rotated>
+          <ArgumentAxis />
+          <ValueAxis />
+          <BarSeries valueField="score" argumentField="name" />
+          <Title text="Najpopularniejsze tagi" />
+          <EventTracker />
+          <Tooltip />
+        </Chart>
+      </Paper>
+      </Grid>
+    </Grid>
   );
 }
 

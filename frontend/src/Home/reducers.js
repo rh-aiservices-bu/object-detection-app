@@ -9,7 +9,9 @@ import {
 
 const initialState = {
   scoresResponse: null,
-  scores: [],
+  scores: {
+    score: 0, scores: []
+  },
   scoresError: null,
   tagsResponse: null,
   tags: [],
@@ -22,7 +24,6 @@ export const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         scoresResponse: null,
-        scores: [],
         scoresError: null,
       };
     case GET_SCORES_FULFILLED:

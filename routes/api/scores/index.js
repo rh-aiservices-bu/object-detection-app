@@ -8,19 +8,28 @@ const { OBJECT_DETECTION_URL, KAFKA_TOPIC_IMAGES } = require("../../../utils/con
 const imageStoragePrefix = "images";
 
 module.exports = async function (fastify, opts) {
-  fastify.get("/", async function (request, reply) {
-    const { code, data } = await requestScores();
+  fastify.post("/", async function (request, reply) {
+    const user = _.get(request, "body.user");
+    if (!user) {
+      reply.code(422);
+      return {
+        status: "error",
+        statusCode: 422,
+        message: "Missing Fields: user",
+      };
+    }
+    const { code, data } = await requestScores(user);
     reply.code(code);
     return data;
   });
 };
 
-async function requestScores() {
+async function requestScores(user) {
   let code, data;
   try {
     const response = await axios({
       method: "GET",
-      url: OBJECT_DETECTION_URL + "/api/scores",
+      url: OBJECT_DETECTION_URL + "/api/scores/" + user,
     });
     code = response.status;
     data = response.data;
