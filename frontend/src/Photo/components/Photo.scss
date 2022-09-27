@@ -1,9 +1,13 @@
 .app {
-  min-width: 100vw;
-  min-height: 90vh;
+  min-width: 35vw;
+  min-height: 30vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.marginPanel {
+  margin-bottom: 15px;
 }
 
 .photo {

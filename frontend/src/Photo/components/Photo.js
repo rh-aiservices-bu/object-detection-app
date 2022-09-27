@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Switch } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { resetSearch, searchPhoto } from "../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -320,9 +320,16 @@ function Photo({
   }
 
   return (
-    <div className="photo">
-      {renderCamera()}
-      {renderSnapshot()}
+    <div>
+      <div className="marginPanel">
+        <Button variant="contained" size="large" color="secondary" className={classes.margin} href="/">
+          Powrót do menu głównego
+        </Button>
+      </div>
+      <div className="photo">
+        {renderCamera()}
+        {renderSnapshot()}
+      </div>
     </div>
   );
 }
