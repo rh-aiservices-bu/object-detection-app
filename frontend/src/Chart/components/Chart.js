@@ -20,33 +20,46 @@ const data = [
   { year: '2010', population: 6.930 },
 ];
 
+var tags = [
+  { name: 'hat', score: 6.5 },
+  { name: 'cup', score: 4.5 },
+  { name: 'dog', score: 7.5 },
+  { name: 'cat', score: 9.5 },
+  { name: 'tiger', score: 3.5 },
+  { name: 'elephant', score: 3.5 },
+  { name: 'spoon', score: 2.5 },
+  { name: 'plant', score: 6.5 },
+];
+
 export default class Chart extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       data,
+      tags
     };
   }
 
   render() {
-    const { data: chartData } = this.state;
+    const { data: chartData } = this.state.data;
+    const { data: tagsData } = this.state.tags;
 
     return (
       <Paper>
-        <Chart
-          data={chartData}
-        >
+        <Chart data={chartData}>
           <ArgumentAxis />
           <ValueAxis />
-
-          <BarSeries
-            valueField="population"
-            argumentField="year"
-          />
-          <Title
-            text="World population (billion)"
-          />
+          <BarSeries valueField="population" argumentField="year" />
+          <Title text="Current score" />
+          <EventTracker />
+          <Tooltip />
+        </Chart>
+        <Chart data={chartData} rotated>
+          <ArgumentAxis />
+          <ValueAxis />
+          <BarSeries valueField="score" argumentField="name" />
+          <Title text="The most popular tags" />
           <EventTracker />
           <Tooltip />
         </Chart>
