@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Link, Grid } from "@material-ui/core";
+import { getScores, getTags } from "../actions";
 
 import "./Home.scss";
 
@@ -25,32 +26,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home() {
+function Home({
+  getScores,
+  scoresResponse,
+  scoresError,
+  scores,
+  getTags,
+  tagsResponse,
+  tagsError,
+  tags,
+}) {
   const classes = useStyles();
 
-  const data = [
-    { year: 'test1', population: 96.5 },
-    { year: 'test2', population: 92.4 },
-    { year: 'test3', population: 86.7 },
-    { year: 'test4', population: 82.1 },
-    { year: 'test5', population: 81.9 },
-    { year: 'test6', population: 70.0 },
-    { year: 'test7', population: 44.3 },
-  ];
+  var [dataScores, setDataScores] = useState(scores);
+  var [dataTags, setDataTags] = useState(tags);
 
-  var tags = [
-    { name: 'hat', score: 6.5 },
-    { name: 'cup', score: 4.5 },
-    { name: 'dog', score: 7.5 },
-    { name: 'cat', score: 9.5 },
-    { name: 'tiger', score: 3.5 },
-    { name: 'elephant', score: 3.5 },
-    { name: 'spoon', score: 2.5 },
-    { name: 'plant', score: 6.5 },
-  ];
+  useEffect(() => {
+    const interval = setInterval(() => getScores(), 10000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
-  const [data2, setData2] = useState(data);
-  const [tags2, setTags2] = useState(tags);
+  useEffect(() => {
+    const interval = setInterval(() => getTags(), 10000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => setDataScores(scores), [scores]);
+  useEffect(() => setDataTags(tags), [tags]);
 
   return (
     <div>
@@ -64,10 +70,10 @@ function Home() {
           </Grid>
           <Grid item xs={10}>
           <Paper>
-            <Chart data={data2}>
+            <Chart data={dataScores}>
               <ArgumentAxis />
               <ValueAxis />
-              <BarSeries valueField="population" argumentField="year" />
+              <BarSeries valueField="score" argumentField="name" />
               <Title text="Aktualne wyniki" />
               <EventTracker />
               <Tooltip />
@@ -76,7 +82,7 @@ function Home() {
           </Grid>
           <Grid item xs={10}>
           <Paper>
-            <Chart data={tags2} rotated>
+            <Chart data={dataTags} rotated>
               <ArgumentAxis />
               <ValueAxis />
               <BarSeries valueField="score" argumentField="name" />
@@ -97,7 +103,14 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    getScores: () => {
+      dispatch(getScores());
+    },
+    getTags: () => {
+      dispatch(getTags());
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
