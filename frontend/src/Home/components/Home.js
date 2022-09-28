@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Avatar, Grid } from "@material-ui/core";
+import { Button, Avatar, Grid, Chip } from "@material-ui/core";
 import { getScores, getTags } from "../actions";
 
 import "./Home.scss";
@@ -43,7 +43,6 @@ function Home({
   var [score, setScore] = useState(scores.score);
 
   useEffect(() => {
-    getScores();
     getTags();
   }, []);
 
@@ -87,7 +86,7 @@ function Home({
         <Chart data={dataScores}>
           <ArgumentAxis />
           <ValueAxis />
-          <BarSeries valueField="score" argumentField="name" />
+          <BarSeries valueField="count" argumentField="_id" />
           <Title text="Aktualne wyniki" />
           <EventTracker />
           <Tooltip />
@@ -99,7 +98,7 @@ function Home({
         <Chart data={dataTags} rotated>
           <ArgumentAxis />
           <ValueAxis />
-          <BarSeries valueField="score" argumentField="name" />
+          <BarSeries valueField="total" argumentField="_id" />
           <Title text="Najpopularniejsze tagi" />
           <EventTracker />
           <Tooltip />

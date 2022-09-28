@@ -29,7 +29,7 @@ async function requestScores(user) {
   try {
     const response = await axios({
       method: "GET",
-      url: OBJECT_DETECTION_URL + "/api/scores/" + user,
+      url: OBJECT_DETECTION_URL + "/api/v1/users/stats/" + user,
     });
     code = response.status;
     data = response.data;

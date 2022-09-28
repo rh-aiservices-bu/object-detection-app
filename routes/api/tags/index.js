@@ -20,7 +20,7 @@ async function requestTags() {
   try {
     const response = await axios({
       method: "GET",
-      url: OBJECT_DETECTION_URL + "/api/tags",
+      url: OBJECT_DETECTION_URL + "/api/v1/labels/stats",
     });
     code = response.status;
     data = response.data;
