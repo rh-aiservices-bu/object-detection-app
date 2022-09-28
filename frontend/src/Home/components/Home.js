@@ -46,6 +46,7 @@ function Home({
   var [score, setScore] = useState(scores.score);
 
   useEffect(() => {
+    getScores();
     getTags();
     getUserTags();
   }, []);
@@ -65,10 +66,19 @@ function Home({
   }, []);
 
   useEffect(() => {
+    const interval = setInterval(() => getUsertags(), 10000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
     setDataScores(scores.scores);
     setScore(scores.score)
   }, [scores]);
   useEffect(() => setDataTags(tags), [tags]);
+  useEffect(() => setDataUsertags(usertags), [usertags]);
+  
 
   return (
     <Grid container spacing={3}>
@@ -85,9 +95,9 @@ function Home({
           </Button>
         </Grid>
       </Grid>
-      <Grid item xs={10}>
+      <Grid xs={10} spacing={1} className="marginPanel">
         {dataUsertags.map((el) => (
-          <Chip color="secondary" avatar={<Avatar>{el.total}</Avatar>} label={el._id}/>
+          <Chip color="secondary" avatar={<Avatar>{el.total}</Avatar>} label={el._id} className="marginTotal"/>
         ))}
       </Grid>
       <Grid item xs={10}>
