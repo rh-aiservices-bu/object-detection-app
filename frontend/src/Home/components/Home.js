@@ -66,7 +66,7 @@ function Home({
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => getUsertags(), 10000);
+    const interval = setInterval(() => getUserTags(), 10000);
     return () => {
       clearInterval(interval);
     };

@@ -30,7 +30,7 @@ async function requestRegistration(register) {
   try {
     const response = await axios({
       method: "POST",
-      url: DBAPI_URL + "/api/v1/register/users",
+      url: DBAPI_URL + "/camel/v1/cache/users",
       data: { register },
     });
     code = response.status;
