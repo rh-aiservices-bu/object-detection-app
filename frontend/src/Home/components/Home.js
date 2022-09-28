@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Avatar, Grid, Chip } from "@material-ui/core";
-import { getScores, getTags } from "../actions";
+import { getScores, getTags, getUserTags } from "../actions";
 
 import "./Home.scss";
 
@@ -35,15 +35,19 @@ function Home({
   tagsResponse,
   tagsError,
   tags,
+  getUserTags,
+  usertags
 }) {
   const classes = useStyles();
 
   var [dataScores, setDataScores] = useState(scores.scores);
   var [dataTags, setDataTags] = useState(tags);
+  var [dataUsertags, setDataUsertags] = useState(usertags);
   var [score, setScore] = useState(scores.score);
 
   useEffect(() => {
     getTags();
+    getUserTags();
   }, []);
 
   useEffect(() => {
@@ -80,6 +84,11 @@ function Home({
             Zrób zdjęcie
           </Button>
         </Grid>
+      </Grid>
+      <Grid item xs={10}>
+        {dataUsertags.map((el) => (
+          <Chip color="secondary" avatar={<Avatar>{el.total}</Avatar>} label={el._id}/>
+        ))}
       </Grid>
       <Grid item xs={10}>
       <Paper>
@@ -120,6 +129,9 @@ function mapDispatchToProps(dispatch) {
     },
     getTags: () => {
       dispatch(getTags());
+    },
+    getUserTags: () => {
+      dispatch(getUserTags());
     },
   };
 }

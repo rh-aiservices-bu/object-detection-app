@@ -4,14 +4,18 @@ import { createAxiosErrorNotification } from "../Notifications";
 import {
   GET_SCORES,
   GET_TAGS,
+  GET_USERTAGS,
   getScoresFulfilled,
   getScoresRejected,
   getTagsFulfilled,
-  getTagsRejected
+  getTagsRejected,
+  getUserTagsFulfilled,
+  getUserTagsRejected
 } from "./actions";
 
 const apiUrlScores = "/api/scores";
 const apiUrlTags = "/api/tags";
+const apiUrlUserTags = "/api/usertags";
 
 function* executeGetScores(action) {
   try {
@@ -45,6 +49,23 @@ function* executeGetTags(action) {
   }
 }
 
+function* executeGetUserTags(action) {
+  try {
+    const response = yield call(axios, {
+      method: "POST",
+      url: apiUrlUserTags,
+      data: {
+        user: localStorage.getItem('user'),
+      },
+    });
+    
+    yield put(getUserTagsFulfilled(response));
+  } catch (error) {
+    yield put(createAxiosErrorNotification(error));
+    yield put(getUserTagsRejected(error));
+  }
+}
+
 export function* watchGetScores() {
   yield takeLatest(GET_SCORES, executeGetScores);
 }
@@ -52,5 +73,9 @@ export function* watchGetScores() {
 export function* watchGetTags() {
   yield takeLatest(GET_TAGS, executeGetTags);
 }
-  
-export default [watchGetScores(), watchGetTags()];
+
+export function* watchGetUserTags() {
+  yield takeLatest(GET_USERTAGS, executeGetUserTags);
+}
+
+export default [watchGetScores(), watchGetTags(), watchGetUserTags()];

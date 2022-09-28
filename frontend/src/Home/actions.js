@@ -41,3 +41,25 @@ export const getTagsRejected = (error) => ({
     error,
   },
 });
+
+export const GET_USERTAGS = "Home.GET_USERTAGS";
+export const getUserTags = () => ({
+  type: GET_USERTAGS,
+  payload: {},
+});
+
+export const GET_USERTAGS_FULFILLED = "Home.GET_USERTAGS_FULFILLED";
+export const getUserTagsFulfilled = (response) => ({
+  type: GET_USERTAGS_FULFILLED,
+  payload: {
+    response,
+  },
+});
+
+export const GET_USERTAGS_REJECTED = "Home.GET_USERTAGS_REJECTED";
+export const getUserTagsRejected = (error) => ({
+  type: GET_USERTAGS_REJECTED,
+  payload: {
+    error,
+  },
+});
